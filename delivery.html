@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#153c2d">
+<title>لوحة المندوب | الحمزاوي</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="admin.css">
+<link rel="stylesheet" href="delivery.css">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body class="admin-page delivery-page">
+<header class="admin-header">
+  <a class="admin-brand" href="index.html"><img src="assets/logo.jpg" alt=""><span>الحمزاوي <small>لوحة المندوب</small></span></a>
+  <div class="header-actions"><a class="store-link" href="admin.html">لوحة الإدارة</a><a class="store-link" href="index.html">المتجر</a><button class="quiet-button" id="sign-out" type="button" hidden>تسجيل الخروج</button></div>
+</header>
+<main class="admin-main">
+  <section class="login-screen" id="login-screen">
+    <form class="login-form" id="login-form">
+      <p class="eyebrow">حساب مندوب التوصيل</p>
+      <h1>تسجيل الدخول</h1>
+      <p class="login-copy">استخدم الحساب الذي أضافه مدير المتجر للمندوبين.</p>
+      <label for="email">البريد الإلكتروني</label>
+      <input id="email" type="email" autocomplete="username" required>
+      <label for="password">كلمة المرور</label>
+      <input id="password" type="password" autocomplete="current-password" required>
+      <button class="primary-button" type="submit">دخول</button>
+      <p class="notice" id="login-message" role="status"></p>
+    </form>
+  </section>
+
+  <section class="access-screen" id="access-screen" hidden>
+    <div class="access-message"><span class="access-mark">!</span><h1>الحساب غير مفعّل كمندوب</h1><p>اطلب من مدير المتجر إضافة حسابك إلى قائمة المندوبين.</p><button class="quiet-button" id="access-sign-out" type="button">تسجيل الخروج</button></div>
+  </section>
+
+  <section class="dashboard" id="dashboard" hidden>
+    <div class="page-heading"><div><p class="eyebrow">تسليم الطلبات الجاهزة</p><h1>طلبات التوصيل</h1><p class="muted" id="account-label"></p></div><button class="refresh-button" id="refresh-orders" type="button" aria-label="تحديث الطلبات" title="تحديث الطلبات">↻</button></div>
+    <div class="summary-grid courier-summary" aria-live="polite">
+      <article class="summary-item"><span>جاهزة للاستلام</span><strong id="count-available">—</strong></article>
+      <article class="summary-item"><span>معك للتوصيل</span><strong id="count-assigned">—</strong></article>
+    </div>
+    <div class="delivery-groups">
+      <section class="delivery-group"><div class="delivery-group-heading"><h2>جاهزة للاستلام</h2><span id="available-label"></span></div><div class="delivery-orders" id="available-orders" aria-live="polite"></div></section>
+      <section class="delivery-group"><div class="delivery-group-heading"><h2>طلبات معك</h2><span id="assigned-label"></span></div><div class="delivery-orders" id="assigned-orders" aria-live="polite"></div></section>
+    </div>
+    <p class="notice page-notice" id="dashboard-message" role="status"></p>
+  </section>
+</main>
+<script src="delivery.js"></script>
+</body>
+</html>

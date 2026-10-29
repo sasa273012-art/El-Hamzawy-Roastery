@@ -1,0 +1,432 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#0c4b2e">
+<meta name="description" content="تسوّق اللب والسوداني والمكسرات والتسالي من الحمزاوي، وأضف طلبك للسلة واستخدم كود الخصم.">
+<title>الحمزاوي | لب ومكسرات وتسالي</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body>
+<div class="topbar"><span>🥜 <b>الحمزاوي</b> — الطعم الحلو يبدأ من هنا</span><span>جودة تختارها بنفسك • طلبك لحد باب البيت</span></div>
+<header>
+  <a class="brand" href="#home"><img class="brand-logo" src="assets/logo.jpg" alt="شعار الحمزاوي"><span class="brand-name">الحمزاوي</span></a>
+  <nav class="nav"><a href="#home">الرئيسية</a><a href="#categories">الأقسام</a><a href="#products">المنتجات</a><a href="#track-order">متابعة الطلب</a></nav>
+  <div class="head-actions"><button class="icon-btn cart-icon-btn" type="button" aria-label="فتح السلة" onclick="openCart()">🛒 <span class="cart-count" id="cart-count">0</span></button></div>
+</header>
+<section class="hero" id="home">
+ <div class="hero-copy"><span class="eyebrow">✦ طازة • مختارة بعناية • طعم أصيل</span><h1>الطعم الحلو<br><span>يبدأ من الحمزاوي</span></h1><p>اختار اللي بتحبه من اللب والسوداني والمكسرات والتسالي، وحدد الوزن المناسب وضيفه للسلة.</p><div class="hero-buttons"><button class="btn btn-gold" onclick="document.getElementById('products').scrollIntoView({behavior:'smooth'})">تسوّق المنتجات ←</button></div></div>
+ <div class="hero-art"><div class="bowl">🥜</div><div class="float-chip chip1">✨ جودة على أصولها</div><div class="float-chip chip2">🥜 اختيارات لكل وقت</div></div>
+</section>
+<div class="benefits"><div class="benefit"><span class="emoji">🌿</span><div><strong>اختيارات متنوعة</strong><small>لب ومكسرات وتسالي لكل الأذواق</small></div></div><div class="benefit"><span class="emoji">⚖️</span><div><strong>أوزان تناسبك</strong><small>اختار الوزن المناسب لكل منتج</small></div></div><div class="benefit"><span class="emoji">📦</span><div><strong>طلب سهل وسريع</strong><small>اختار المنتجات وراجع إجمالي طلبك</small></div></div></div>
+<section class="section" id="categories"><div class="section-head"><div><div class="kicker">اختار اللي بتحبه</div><h2>تسوّق حسب القسم</h2><div class="sub">اختار قسم علشان تشوف منتجاته</div></div></div><div class="categories" id="category-list"></div></section>
+<section class="section" id="products"><div class="section-head"><div><div class="kicker">منيو الحمزاوي</div><h2>منتجاتنا</h2><div class="sub">الأسعار بالجنيه المصري لكل كيلو، إلا لو موضح غير كده</div></div><div class="filters"><input class="search" id="search" placeholder="🔎 ابحث عن منتج..." aria-label="ابحث عن منتج"></div></div><div class="products" id="product-list" aria-live="polite"></div></section>
+<section class="section order-tracking" id="track-order">
+  <div class="section-head"><div><div class="kicker">متابعة الطلب</div><h2>حالة طلبك</h2><div class="sub">أدخل رقم الطلب ورقم الهاتف المسجل لمراجعة تحديث الدفع والتنفيذ.</div></div></div>
+  <form class="tracking-form" id="tracking-form">
+    <div class="field"><label for="tracking-code">رقم الطلب</label><input id="tracking-code" required autocomplete="off" placeholder="HZ-XXXXXXXXXXXX" dir="ltr"></div>
+    <div class="field"><label for="tracking-phone">رقم الهاتف</label><input id="tracking-phone" type="tel" required inputmode="tel" autocomplete="tel" placeholder="رقم الهاتف المسجل"></div>
+    <button class="btn btn-gold tracking-submit" type="submit">تحقق من الحالة</button>
+  </form>
+  <div class="tracking-result" id="tracking-result" role="status" aria-live="polite" hidden></div>
+</section>
+<footer>
+  <div class="footer-inner">
+    <div class="footer-column footer-about">
+      <div class="footer-brand"><img src="assets/logo.jpg" alt="شعار الحمزاوي"><span>الحمزاوي</span></div>
+      <p>لب • سوداني • مكسرات • تسالي<br>اختيارات طازة لكل وقت.</p>
+    </div>
+    <nav class="footer-column" aria-label="روابط سريعة">
+      <h2 class="footer-heading">روابط سريعة</h2>
+      <div class="footer-links"><a href="#home">الرئيسية</a><a href="#categories">الأقسام</a><a href="#products">المنتجات</a><a href="#track-order">متابعة الطلب</a></div>
+    </nav>
+    <div class="footer-column">
+      <h2 class="footer-heading">الطلب والدفع</h2>
+      <p>أضف منتجاتك إلى السلة لإتمام الطلب. تتوفر خيارات الدفع عند الاستلام أو التحويل بالمحفظة وInstaPay.</p>
+    </div>
+  </div>
+  <details class="photo-credits">
+    <summary>مصادر الصور التوضيحية</summary>
+    <ul>
+      <li><a href="https://commons.wikimedia.org/wiki/File:9248Cuisine_Foods_Seeds_Snack_Baliuag_Bulacan_14.jpg" target="_blank" rel="noopener">بذور دوار الشمس — Judgefloro، CC0</a></li>
+      <li><a href="https://commons.wikimedia.org/wiki/File:Roasted_Peanuts_(2019).jpg" target="_blank" rel="noopener">الفول السوداني — Augustus Binu، CC BY-SA 3.0</a></li>
+      <li><a href="https://commons.wikimedia.org/wiki/File:Liat_Portal_for_Foodie_Disorder_-_Mixed_nuts_assortment.jpg" target="_blank" rel="noopener">المكسرات المشكلة — HaJunkiyada، CC BY-SA 4.0</a></li>
+      <li><a href="https://commons.wikimedia.org/wiki/File:036_Michalki_Hanka_-_chocolate_candies_in_Poland,_Polish_food.jpg" target="_blank" rel="noopener">حلوى الشوكولاتة — Marek Slusarczyk، CC BY 3.0</a></li>
+      <li><a href="https://commons.wikimedia.org/wiki/File:Gummy_candy_in_vampire_shape_(13912244523).jpg" target="_blank" rel="noopener">حلوى الجيلي — Erich Ferdinand، CC BY 2.0</a></li>
+      <li><a href="https://commons.wikimedia.org/wiki/File:Candy_6577.jpg" target="_blank" rel="noopener">حلوى مغلفة — PereslavlFoto، CC BY-SA 3.0</a></li>
+    </ul>
+    <p>الصور أمثلة توضيحية وقد تختلف عن شكل المنتج الفعلي.</p>
+  </details>
+  <div class="copyright"><span>© 2026 الحمزاوي — جميع الحقوق محفوظة</span><span>تصميم متجاوب للموبايل والكمبيوتر</span></div>
+</footer>
+<dialog class="cart-dialog" id="cart-dialog" aria-labelledby="cart-title">
+  <div class="cart-drawer-header"><h2 id="cart-title">🛒 سلة المشتريات وبيانات الطلب</h2><button class="cart-close" type="button" aria-label="إغلاق السلة" onclick="closeCart()">×</button></div>
+  <div class="cart-drawer-content">
+    <div id="cart-items" aria-live="polite"><div class="cart-empty">السلة فاضية لسه — اختار منتج من فوق 🥜</div></div>
+    <section class="coupon-box" aria-label="كود الخصم">
+      <label for="coupon-code">كود الخصم</label>
+      <div class="coupon-controls">
+        <input id="coupon-code" type="text" autocomplete="off" placeholder="أدخل كود الخصم">
+        <button id="apply-coupon" type="button">تطبيق</button>
+        <button id="remove-coupon" type="button" hidden>إزالة</button>
+      </div>
+      <small class="coupon-hint">استخدم SAVE50 لخصم 50 جنيهًا.</small>
+      <div id="coupon-status" class="coupon-status" role="status" aria-live="polite"></div>
+    </section>
+    <div class="totals">
+      <div class="total-line"><span>إجمالي المنتجات</span><strong id="subtotal">0 جنيه</strong></div>
+      <div class="total-line discount" id="coupon-discount-row" hidden><span>خصم الكوبون</span><strong id="coupon-discount">0 جنيه</strong></div>
+      <div class="total-line discount"><span>خصم الرصيد</span><strong id="discount">0 جنيه</strong></div>
+      <div class="total-line"><span>تكلفة التوصيل</span><strong id="delivery-fee">ابحث عن العنوان</strong></div>
+      <div class="total-line final"><span>الإجمالي</span><strong id="total">0 جنيه</strong></div>
+    </div>
+    <div class="small-note">التوصيل ٨ جنيه لكل كيلومتر حسب مسافة الطريق من المحل. اكتب عنوانك وابحث عنه لاختيار الموقع الصحيح.</div>
+    <form id="order-form" class="drawer-order-form">
+      <h3>📋 بيانات التوصيل</h3>
+      <div class="form-grid">
+        <div class="field"><label for="customer">الاسم</label><input id="customer" required autocomplete="name" placeholder="اسم العميل"></div>
+        <div class="field"><label for="phone">رقم التليفون</label><input id="phone" type="tel" required autocomplete="tel" inputmode="tel" placeholder="رقم للتواصل"></div>
+      </div>
+      <section class="drawer-loyalty" id="loyalty" aria-live="polite">
+        <div class="points-balance-row"><span>الرصيد</span><strong id="points-balance">أدخل رقم الهاتف</strong></div>
+        <div class="points-balance-row"><span>المتاح للاستخدام</span><strong id="points-use-limit">—</strong></div>
+        <div class="field points-use-field"><label for="use-points">استخدم من رصيدك</label><input id="use-points" type="number" min="0" step="1" value="0" aria-describedby="points-use-limit"></div>
+      </section>
+      <div class="form-grid order-address-fields">
+        <div class="field full"><label for="address">عنوان التوصيل</label><textarea id="address" required autocomplete="street-address" placeholder="اكتب المنطقة والشارع والعنوان بالتفصيل"></textarea><button class="btn btn-gold location-button" id="search-address" type="button">🔎 ابحث عن العنوان واحسب التوصيل</button><select class="address-results" id="address-results" aria-label="اختر العنوان الصحيح من نتائج البحث" hidden><option value="">اختر العنوان المطابق</option></select><small class="location-hint" id="location-status" role="status" aria-live="polite">اكتب عنوانك ثم ابحث عنه لاختيار المكان المطابق وحساب مسافة الطريق.</small><small class="location-hint">بيانات العناوين والطرق © <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap contributors</a>.</small></div>
+        <div class="field full"><label for="payment">طريقة الدفع</label><select id="payment"><option value="cash">الدفع عند الاستلام</option><option value="wallet">محفظة إلكترونية</option><option value="instapay">InstaPay</option></select></div>
+        <section class="digital-payment field full" id="digital-payment" hidden aria-live="polite">
+          <div class="payment-details" id="payment-details"></div>
+          <div class="field">
+            <label for="payment-receipt">صورة التحويل (مطلوبة لتأكيد الطلب)</label>
+            <input id="payment-receipt" type="file" accept="image/*">
+            <small>ارفع صورة واضحة للإيصال. سيظل الطلب بانتظار مراجعة الدفع.</small>
+          </div>
+          <img id="receipt-preview" class="receipt-preview" alt="معاينة صورة التحويل" hidden>
+          <small class="payment-demo-note">يرجى التأكد من بيانات المستلم. سيظل الطلب بانتظار مراجعة الإيصال يدويًا؛ إرفاق الصورة لا يؤكد وصول التحويل، ولا يتحدّث الرصيد قبل تأكيد الدفع.</small>
+        </section>
+        <div class="field full"><label for="notes">ملاحظات الطلب (اختياري)</label><textarea id="notes" placeholder="أي تفاصيل إضافية للطلب"></textarea></div>
+      </div>
+      <div class="status" id="order-status" role="status"></div>
+      <div class="small-note">تُحفظ الطلبات في قاعدة بيانات المتجر لمراجعتها.</div>
+    </form>
+  </div>
+  <div class="cart-drawer-footer"><button class="btn submit" type="submit" form="order-form">تأكيد الطلب</button></div>
+</dialog>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+<script>
+const SUPABASE_URL='https://odwmymujroxztatmkxav.supabase.co';
+const SUPABASE_PUBLISHABLE_KEY='sb_publishable_BtiZVBJ6puj_gOddR-Adsg_Xqr3Kxox';
+const supabaseClient=window.supabase?.createClient(SUPABASE_URL,SUPABASE_PUBLISHABLE_KEY);
+if(!supabaseClient)console.error('تعذر تحميل Supabase؛ تحقق من الاتصال بالإنترنت وحمّل مكتبة Supabase.');
+const storeLocation={latitude:30.072808956231,longitude:31.244908331037},deliveryRatePerKm=8;
+const addressSearchUrl='https://nominatim.openstreetmap.org/search',routeServiceUrl='https://router.project-osrm.org/route/v1/driving';
+const products=[
+{id:1,name:'لب أبيض',price:280,cat:'لب والسوداني',icon:'🌻',image:'seeds-snack.jpg',desc:'لب أبيض مختار'},
+{id:2,name:'لب سوري بالليمون',price:240,cat:'لب والسوداني',icon:'🌻',image:'seeds-snack.jpg',desc:'لب بطعم الليمون'},
+{id:3,name:'لب أبيض (جامبو)',price:360,cat:'لب والسوداني',icon:'🌻',image:'seeds-snack.jpg',desc:'حجم كبير ومقرمش'},
+{id:4,name:'سوداني محمص',price:200,cat:'لب والسوداني',icon:'🥜',image:'roasted-peanuts.jpg',desc:'سوداني محمص طازج'},
+{id:5,name:'سوداني بالعسل',price:200,cat:'لب والسوداني',icon:'🥜',image:'roasted-peanuts.jpg',desc:'تحلية لذيذة ومقرمشة'},
+{id:6,name:'سوداني بقشره مملح',price:160,cat:'لب والسوداني',icon:'🥜',image:'roasted-peanuts.jpg',desc:'تسالي بطعم أصيل'},
+{id:7,name:'فستق جامبو محمص',price:820,cat:'المكسرات',icon:'🥜',image:'mixed-nuts.jpg',desc:'فستق محمص ومميز'},
+{id:8,name:'بندق فاخر حصى',price:380,cat:'المكسرات',icon:'🌰',image:'mixed-nuts.jpg',desc:'بندق فاخر'},
+{id:9,name:'عين جمل فاخر حصى',price:280,cat:'المكسرات',icon:'🌰',image:'mixed-nuts.jpg',desc:'عين جمل مختار'},
+{id:10,name:'كاجو محمص وسط',price:680,cat:'المكسرات',icon:'🥜',image:'mixed-nuts.jpg',desc:'كاجو بطعم غني'},
+{id:11,name:'لوز أمريكي',price:840,cat:'المكسرات',icon:'🌰',image:'mixed-nuts.jpg',desc:'لوز مقرمش'},
+{id:12,name:'مكسرات مشكلة',price:800,cat:'المكسرات',icon:'🥣',image:'mixed-nuts.jpg',desc:'تشكيلة من المكسرات'},
+{id:13,name:'توفيكس تركي',price:160,cat:'التوفي والملبس',icon:'🍬',image:'candies.jpg',desc:'حلوى توفي تركي'},
+{id:14,name:'ملبس جامي مصري',price:120,cat:'التوفي والملبس',icon:'🍬',image:'candies.jpg',desc:'ملبس بطعم مميز'},
+{id:15,name:'جيلي ميمكس بالسكر',price:240,cat:'التوفي والملبس',icon:'🍭',image:'gummies.jpg',desc:'جيلي ملون بالسكر'},
+{id:16,name:'ملبس كويبي قهوة',price:360,cat:'التوفي والملبس',icon:'🍬',image:'candies.jpg',desc:'ملبس بطعم القهوة'},
+{id:17,name:'شوكولاتة كوفرتينا سادة',price:280,cat:'الشوكولاتة',icon:'🍫',image:'chocolates.jpg',desc:'شوكولاتة كوفرتينا'},
+{id:18,name:'شوكولاتة جامي',price:240,cat:'الشوكولاتة',icon:'🍫',image:'chocolates.jpg',desc:'شوكولاتة بطعم غني'},
+{id:19,name:'شيكولاتة بندق ولوز',price:380,cat:'الشوكولاتة',icon:'🍫',image:'chocolates.jpg',desc:'بندق ولوز بالشوكولاتة'},
+{id:20,name:'بسكويت شيكولاتة',price:220,cat:'الشوكولاتة',icon:'🍪',image:'chocolates.jpg',desc:'بسكويت بطعم الشوكولاتة'},
+{id:21,name:'فاندم فواكه',price:120,cat:'التوفي والملبس',icon:'🍬',image:'candies.jpg',desc:'حلوى فواكه'},
+{id:22,name:'روبيس مشي أسباني',price:320,cat:'الكاندي',icon:'🍭',image:'gummies.jpg',desc:'كاندي بنكهات متنوعة'},
+{id:23,name:'مارشميلو أسباني',price:320,cat:'الكاندي',icon:'🍡',image:'candies.jpg',desc:'مارشميلو طري'},
+{id:24,name:'كونو بايتس بالشوكولاتة',price:200,cat:'الكاندي',icon:'🍫',image:'chocolates.jpg',desc:'لقيمات بالشوكولاتة'}
+];
+const cats=[{name:'الكل',icon:'🥣'},{name:'لب والسوداني',icon:'🥜'},{name:'المكسرات',icon:'🌰'},{name:'التوفي والملبس',icon:'🍬'},{name:'الشوكولاتة',icon:'🍫'},{name:'الكاندي',icon:'🍭'}];
+const weights=[{grams:250,label:'ربع كيلو'},{grams:500,label:'نصف كيلو'},{grams:750,label:'ثلاثة أرباع كيلو'},{grams:1000,label:'كيلو'}];
+const paymentDetails={wallet:{label:'حوّل إلى المحفظة على الرقم:',recipient:'01204671999'},instapay:{label:'حوّل عبر InstaPay إلى:',recipient:'mohamed.mohi1999@instapay',url:'https://ipn.eg/S/mohamed.mohi1999/instapay/0EO7N6'}};
+let selectedCat='الكل',cart={},usedPoints=0,activePointsPhone='',appliedCoupon='',customerLocation=null,addressCandidates=[],deliverySearchId=0;
+const $=id=>document.getElementById(id);
+let receiptPreviewUrl='';
+let trackingTimer=null,activeTracking=null;
+const money=n=>Math.max(0,n).toLocaleString('ar-EG',{maximumFractionDigits:2})+' جنيه';
+const getCartEntries=()=>Object.entries(cart).map(([key,quantity])=>{const [id,grams]=key.split(':').map(Number);return{product:products.find(p=>p.id===id),grams,quantity}}).filter(entry=>entry.product);
+const getSubtotal=()=>getCartEntries().reduce((sum,{product,grams,quantity})=>sum+product.price*grams*quantity/1000,0);
+const getCouponDiscount=subtotal=>appliedCoupon==='SAVE50'?Math.min(50,subtotal):0;
+function getDeliveryDetails(location=customerLocation){
+ if(!location)return{distanceKm:null,fee:0};
+ return{distanceKm:location.distanceKm,fee:location.fee};
+}
+const earned=()=>Math.floor((getSubtotal()+Number.EPSILON)/100)*3;
+const weightLabel=grams=>weights.find(weight=>weight.grams===grams)?.label||`${grams} جرام`;
+const generateOrderCode=()=>'HZ-'+Array.from(crypto.getRandomValues(new Uint8Array(6)),byte=>byte.toString(16).padStart(2,'0')).join('').toUpperCase();
+const paymentStatusLabel=status=>({'طلب جديد':'تم تسجيل الطلب','بانتظار تأكيد الدفع':'الإيصال وصل وينتظر مراجعة المتجر','تم تأكيد الدفع':'تم قبول الدفع','تعذر تأكيد الدفع':'تعذر تأكيد الدفع، يُرجى التواصل مع المتجر'})[status]||status;
+const fulfillmentStatusLabel=status=>({'قيد التجهيز':'الطلب قيد التجهيز','مكتمل':'الطلب مكتمل'})[status]||status;
+function toast(t){$('toast').textContent=t;$('toast').classList.add('show');setTimeout(()=>$('toast').classList.remove('show'),2400)}
+function normalizePhone(value){const digits=String(value).replace(/[٠-٩]/g,digit=>String('٠١٢٣٤٥٦٧٨٩'.indexOf(digit))).replace(/[۰-۹]/g,digit=>String('۰۱۲۳۴۵۶۷۸۹'.indexOf(digit))).replace(/\D/g,'');const normalized=digits.startsWith('0020')?'0'+digits.slice(4):digits.startsWith('20')&&digits.length===12?'0'+digits.slice(2):digits;return normalized.length>=10&&normalized.length<=15?normalized:''}
+function pointsStorageKey(phone){return`hamzawy_points_${phone}`}
+function loadPhonePoints(phone){try{const saved=localStorage.getItem(pointsStorageKey(phone));if(saved===null)return 0;const points=Number(saved);if(!Number.isInteger(points)||points<0)throw new Error('Invalid saved points balance');return points}catch(error){console.error('تعذر استعادة رصيد نقاط رقم الهاتف:',error);toast('تعذر استعادة رصيد النقاط لهذا الرقم.');return 0}}
+let phonePoints=0;
+function updatePointsForPhone(){const phone=normalizePhone($('phone').value);if(!phone){activePointsPhone='';phonePoints=0;$('use-points').value=0;usedPoints=0;renderCart();return}if(activePointsPhone===phone)return;activePointsPhone=phone;phonePoints=loadPhonePoints(phone);$('use-points').value=0;usedPoints=0;renderCart()}
+function openCart(){if(!$('cart-dialog').open)$('cart-dialog').showModal()}
+function closeCart(){if($('cart-dialog').open)$('cart-dialog').close()}
+function clearDeliveryQuote(message){
+ deliverySearchId++;
+ customerLocation=null;
+ addressCandidates=[];
+ $('address-results').replaceChildren(new Option('اختر العنوان المطابق',''));
+ $('address-results').hidden=true;
+ $('address-results').disabled=false;
+ $('search-address').disabled=false;
+ $('location-status').textContent=message;
+ renderCart();
+}
+async function searchDeliveryAddress(){
+ const address=$('address').value.trim(),button=$('search-address');
+ if(address.length<5){$('location-status').textContent='اكتب عنوانًا مفصلًا من ٥ أحرف على الأقل ثم ابحث عنه.';$('address').focus();return}
+ const requestId=++deliverySearchId;
+ customerLocation=null;addressCandidates=[];
+ $('address-results').replaceChildren(new Option('اختر العنوان المطابق',''));
+ $('address-results').hidden=true;
+ button.disabled=true;$('location-status').textContent='جارٍ البحث عن العنوان...';renderCart();
+ try{
+  const query=new URLSearchParams({format:'jsonv2',addressdetails:'1',limit:'5',countrycodes:'eg',q:`${address}, مصر`});
+  const response=await fetch(`${addressSearchUrl}?${query.toString()}`,{headers:{'Accept-Language':'ar'}});
+  if(!response.ok)throw new Error(`خدمة البحث غير متاحة الآن (${response.status}). حاول مرة أخرى.`);
+  const results=await response.json();
+  if(requestId!==deliverySearchId)return;
+  if(!Array.isArray(results))throw new Error('وصلت استجابة غير متوقعة من خدمة البحث.');
+  addressCandidates=results.map(result=>({
+   label:result.display_name,
+   latitude:Number(result.lat),
+   longitude:Number(result.lon)
+  })).filter(result=>result.label&&Number.isFinite(result.latitude)&&Number.isFinite(result.longitude));
+  if(!addressCandidates.length){$('location-status').textContent='لم نعثر على العنوان. أضف اسم المنطقة والشارع أو أقرب علامة مميزة ثم حاول مرة أخرى.';return}
+  $('address-results').replaceChildren(new Option('اختر العنوان المطابق من النتائج',''),...addressCandidates.map((result,index)=>new Option(result.label,String(index))));
+  $('address-results').hidden=false;
+  $('location-status').textContent='اختر عنوانك الصحيح من النتائج لحساب مسافة الطريق.';
+ }catch(error){
+  if(requestId===deliverySearchId){console.error('تعذر البحث عن عنوان التوصيل:',error);$('location-status').textContent=error instanceof TypeError?'تعذر الاتصال بخدمة البحث. تحقق من الإنترنت وحاول مرة أخرى.':error.message||'تعذر البحث عن العنوان. تحقق من الإنترنت وحاول مرة أخرى.'}
+ }finally{
+  if(requestId===deliverySearchId)button.disabled=false;
+ }
+}
+async function calculateDeliveryRoute(){
+ const selectedIndex=Number($('address-results').value),destination=addressCandidates[selectedIndex];
+ if(!destination)return;
+ const requestId=++deliverySearchId,button=$('search-address'),results=$('address-results');
+ button.disabled=true;results.disabled=true;$('location-status').textContent='جارٍ حساب مسافة الطريق...';
+ try{
+  const routeUrl=`${routeServiceUrl}/${storeLocation.longitude},${storeLocation.latitude};${destination.longitude},${destination.latitude}?overview=false&steps=false`;
+  const response=await fetch(routeUrl);
+  if(!response.ok)throw new Error(`خدمة حساب الطريق غير متاحة الآن (${response.status}). حاول مرة أخرى.`);
+  const data=await response.json();
+  if(requestId!==deliverySearchId)return;
+  const route=data.routes?.[0];
+  if(data.code!=='Ok'||!route||!Number.isFinite(route.distance))throw new Error('لم نجد طريقًا بالسيارة لهذا العنوان. اختر نتيجة أخرى أو راجع العنوان.');
+  const distanceKm=Math.round(route.distance/1000*10000)/10000,fee=Math.round(distanceKm*deliveryRatePerKm*100)/100;
+  customerLocation={latitude:destination.latitude,longitude:destination.longitude,distanceKm,fee};
+  $('location-status').textContent=`${destination.label} — مسافة الطريق ${distanceKm.toLocaleString('ar-EG',{maximumFractionDigits:4})} كم، والتوصيل ${money(fee)}.`;
+  renderCart();
+ }catch(error){
+  if(requestId===deliverySearchId){console.error('تعذر حساب مسافة طريق التوصيل:',error);customerLocation=null;$('location-status').textContent=error instanceof TypeError?'تعذر الاتصال بخدمة حساب الطريق. تحقق من الإنترنت وحاول مرة أخرى.':error.message||'تعذر حساب مسافة الطريق. اختر عنوانًا آخر أو حاول مرة أخرى.';renderCart()}
+ }finally{
+  if(requestId===deliverySearchId){button.disabled=false;results.disabled=false}
+ }
+}
+async function refreshTrackedOrder(){
+ if(!activeTracking||!supabaseClient)return;
+ const{data,error}=await supabaseClient.rpc('lookup_store_order',{p_code:activeTracking.code,p_phone:activeTracking.phone});
+ if(error){if(!activeTracking.fromOrder){$('tracking-result').textContent='تعذر التحقق الآن. حاول مرة أخرى بعد قليل.';clearInterval(trackingTimer);trackingTimer=null}return}
+ const order=Array.isArray(data)?data[0]:null;
+ if(!order){if(!activeTracking.fromOrder)$('tracking-result').textContent='لم نعثر على طلب بهذه البيانات. راجع رقم الطلب والهاتف.';clearInterval(trackingTimer);trackingTimer=null;return}
+ const message=`حالة الدفع: ${paymentStatusLabel(order.payment_status)} — حالة التنفيذ: ${fulfillmentStatusLabel(order.fulfillment_status)}`;
+ $('tracking-result').textContent=message;$('tracking-result').hidden=false;
+ if(activeTracking.fromOrder&&$('order-status').isConnected){$('order-status').style.display='block';$('order-status').textContent=`رقم الطلب ${activeTracking.code}. ${message}`}
+ if(order.payment_status==='تعذر تأكيد الدفع'||(order.payment_status!=='بانتظار تأكيد الدفع'&&order.fulfillment_status==='مكتمل')){clearInterval(trackingTimer);trackingTimer=null}
+}
+function trackOrder(code,phone,fromOrder=false){
+ clearInterval(trackingTimer);
+ activeTracking={code,phone,fromOrder};
+ refreshTrackedOrder();
+ trackingTimer=setInterval(refreshTrackedOrder,15000);
+}
+function updatePaymentDetails(){
+ const method=$('payment').value,details=paymentDetails[method],panel=$('digital-payment'),receipt=$('payment-receipt');
+ panel.hidden=!details;
+ receipt.required=Boolean(details);
+ if(!details){$('payment-details').textContent='';receipt.value='';clearReceiptPreview();return}
+ $('payment-details').innerHTML=method==='instapay'
+  ?`${details.label} <strong>${details.recipient}</strong><a href="${details.url}" target="_blank" rel="noopener">فتح رابط الدفع في InstaPay</a>`
+  :`${details.label} <strong dir="ltr">${details.recipient}</strong>`;
+}
+function clearReceiptPreview(){
+ if(receiptPreviewUrl)URL.revokeObjectURL(receiptPreviewUrl);
+ receiptPreviewUrl='';
+ $('receipt-preview').removeAttribute('src');
+ $('receipt-preview').hidden=true;
+}
+function compressReceipt(file){
+ return new Promise((resolve,reject)=>{
+  if(!file||!file.type.startsWith('image/')){reject(new Error('اختر صورة إيصال بصيغة صورة مدعومة.'));return}
+  if(file.size>8*1024*1024){reject(new Error('حجم صورة الإيصال أكبر من 8 ميجابايت.'));return}
+  createImageBitmap(file).then(bitmap=>{
+   const scale=Math.min(1,1280/Math.max(bitmap.width,bitmap.height)),canvas=document.createElement('canvas');
+   canvas.width=Math.round(bitmap.width*scale);canvas.height=Math.round(bitmap.height*scale);
+   canvas.getContext('2d').drawImage(bitmap,0,0,canvas.width,canvas.height);bitmap.close();
+   canvas.toBlob(blob=>{
+    if(!blob){reject(new Error('تعذر تجهيز صورة الإيصال.'));return}
+    if(blob.size>1024*1024){reject(new Error('تعذر ضغط صورة الإيصال للحجم المناسب؛ اختر صورة أصغر.'));return}
+    resolve(blob);
+   },'image/jpeg',0.78);
+  }).catch(()=>reject(new Error('تعذر فتح صورة الإيصال؛ اختر صورة أخرى.')));
+ });
+}
+ document.addEventListener('keydown',event=>{if(event.key==='Escape'&&$('cart-dialog').open){event.preventDefault();closeCart()}});
+ $('cart-dialog').addEventListener('click',event=>{if(event.target===$('cart-dialog'))closeCart()});
+function loadCart(){try{const raw=localStorage.getItem('hamzawy_cart');if(!raw)return{};const saved=JSON.parse(raw);if(!saved||typeof saved!=='object'||Array.isArray(saved))throw new Error('Invalid saved cart');const entries=Object.entries(saved);if(entries.every(([key,quantity])=>/^\d+:(250|500|750|1000)$/.test(key)&&products.some(p=>p.id===Number(key.split(':')[0]))&&Number.isInteger(quantity)&&quantity>0))return saved;if(entries.every(([id,kilograms])=>products.some(p=>p.id===Number(id))&&typeof kilograms==='number'&&Number.isFinite(kilograms)&&kilograms>0&&Math.abs(kilograms*4-Math.round(kilograms*4))<Number.EPSILON*10)){const migrated=Object.fromEntries(entries.map(([id,kilograms])=>[`${id}:250`,Math.round(kilograms*4)]));localStorage.setItem('hamzawy_cart',JSON.stringify(migrated));return migrated}throw new Error('Invalid saved cart')}catch(error){console.error('تعذر استعادة السلة المحفوظة:',error);toast('تعذر استعادة السلة المحفوظة؛ ابدأ سلة جديدة.');return{}}}
+function saveCart(){try{localStorage.setItem('hamzawy_cart',JSON.stringify(cart))}catch(error){console.error('تعذر حفظ السلة:',error);toast('تعذر حفظ السلة في هذا المتصفح.')}}
+function renderCats(){$('category-list').innerHTML=cats.map(c=>`<button type="button" class="cat ${selectedCat===c.name?'active':''}" data-cat="${c.name}" aria-pressed="${selectedCat===c.name}"><div class="cat-icon">${c.icon}</div><strong>${c.name}</strong></button>`).join('');document.querySelectorAll('[data-cat]').forEach(b=>b.onclick=()=>{selectedCat=b.dataset.cat;renderCats();renderProducts()})}
+function renderProducts(){const q=$('search').value.trim().toLowerCase();const list=products.filter(p=>(selectedCat==='الكل'||p.cat===selectedCat)&&(!q||p.name.toLowerCase().includes(q)));$('product-list').innerHTML=list.map((p,i)=>`<article class="product" style="animation-delay:${Math.min(i*45,300)}ms"><div class="product-pic"><img class="product-image" src="assets/products/${p.image}" alt="${p.name}" loading="lazy" decoding="async"><span class="tag">${p.cat}</span><span class="food" aria-hidden="true">${p.icon}</span></div><div class="product-info"><h3>${p.name}</h3><div class="desc">${p.desc}</div><label class="weight-control">الوزن<select class="weight-select" data-weight="${p.id}" aria-label="اختار وزن ${p.name}">${weights.map((weight,index)=>`<option value="${weight.grams}"${index===0?' selected':''}>${weight.label}</option>`).join('')}</select></label><div class="price-row"><div class="price"><span data-pack-price="${p.id}">${money(p.price/4)}</span> <small data-pack-label="${p.id}">/ ربع كيلو</small></div><button type="button" class="add" data-add="${p.id}" aria-label="أضف ${p.name} إلى السلة">＋ أضف</button></div></div></article>`).join('')||'<p role="status">مفيش منتجات مطابقة للبحث.</p>';document.querySelectorAll('.product-image').forEach(image=>{const showImage=()=>image.closest('.product-pic').classList.add('has-image');if(image.complete){if(image.naturalWidth)showImage()}else image.addEventListener('load',showImage,{once:true})});document.querySelectorAll('[data-weight]').forEach(select=>select.onchange=()=>{const product=products.find(p=>p.id===Number(select.dataset.weight)),grams=Number(select.value),card=select.closest('.product');card.querySelector(`[data-pack-price="${product.id}"]`).textContent=money(product.price*grams/1000);card.querySelector(`[data-pack-label="${product.id}"]`).textContent=`/ ${weightLabel(grams)}`});document.querySelectorAll('[data-add]').forEach(b=>b.onclick=()=>{const card=b.closest('.product'),id=Number(b.dataset.add),grams=Number(card.querySelector('[data-weight]').value),key=`${id}:${grams}`;cart[key]=(cart[key]||0)+1;saveCart();renderCart();toast(`اتضاف ${weightLabel(grams)} من المنتج للسلة 🥜`)})}
+function renderCart(){
+ const sub=getSubtotal(),couponDiscount=getCouponDiscount(sub),phone=normalizePhone($('phone').value),available=phone&&phone===activePointsPhone?phonePoints:0,maxUse=Math.min(available,Math.floor(sub-couponDiscount)),requested=Math.max(0,Math.floor(Number($('use-points').value)||0));
+ usedPoints=Math.min(requested,maxUse);
+ $('use-points').max=String(maxUse);
+ if(requested>maxUse)$('use-points').value=String(maxUse);
+ const delivery=getDeliveryDetails(),total=Math.max(0,sub-couponDiscount-usedPoints)+delivery.fee;
+ const entries=getCartEntries();
+ $('cart-items').innerHTML=entries.length?entries.map(({product,grams,quantity})=>{const key=`${product.id}:${grams}`;return `<div class="cart-row"><div><strong>${product.name} — ${weightLabel(grams)}</strong><small>${quantity.toLocaleString('ar-EG')} عبوة × ${money(product.price*grams/1000)}</small></div><div class="qty"><button type="button" data-dec="${key}" aria-label="تقليل ${product.name}">−</button><strong>${quantity.toLocaleString('ar-EG')}</strong><button type="button" data-inc="${key}" aria-label="زيادة ${product.name}">+</button><button type="button" data-del="${key}" aria-label="حذف ${product.name}">×</button></div></div>`}).join(''):'<div class="cart-empty">السلة فاضية لسه — اختار منتج من فوق 🥜</div>';
+ document.querySelectorAll('[data-dec]').forEach(b=>b.onclick=()=>{const key=b.dataset.dec;cart[key]--;if(cart[key]<=0)delete cart[key];saveCart();renderCart()});
+ document.querySelectorAll('[data-inc]').forEach(b=>b.onclick=()=>{const key=b.dataset.inc;cart[key]++;saveCart();renderCart()});
+ document.querySelectorAll('[data-del]').forEach(b=>b.onclick=()=>{delete cart[b.dataset.del];saveCart();renderCart()});
+ $('subtotal').textContent=money(sub);$('coupon-discount').textContent='− '+money(couponDiscount);$('coupon-discount-row').hidden=couponDiscount===0;$('discount').textContent='− '+money(usedPoints);$('delivery-fee').textContent=customerLocation?money(delivery.fee):'ابحث عن العنوان';$('total').textContent=money(total);$('points-balance').textContent=phone&&phone===activePointsPhone?`${available.toLocaleString('ar-EG')} نقطة`:'أدخل رقم الهاتف';$('points-use-limit').textContent=phone&&phone===activePointsPhone?`${maxUse.toLocaleString('ar-EG')} نقطة (${money(maxUse)})`:'—';$('use-points').disabled=!phone||phone!==activePointsPhone||maxUse===0;
+ $('remove-coupon').hidden=!appliedCoupon;
+ $('coupon-status').textContent=appliedCoupon?`تم تطبيق ${appliedCoupon} — خصم ${money(couponDiscount)}`:'';
+ $('coupon-status').classList.toggle('is-applied',Boolean(appliedCoupon));
+ $('cart-count').textContent=entries.reduce((sum,{quantity})=>sum+quantity,0).toLocaleString('ar-EG');
+}
+$('search').addEventListener('input',renderProducts);
+$('tracking-form').addEventListener('submit',event=>{
+ event.preventDefault();
+ const code=$('tracking-code').value.trim().toUpperCase(),phone=normalizePhone($('tracking-phone').value);
+ if(!phone){$('tracking-result').hidden=false;$('tracking-result').textContent='اكتب رقم هاتف صحيحًا.';return}
+ $('tracking-result').hidden=false;$('tracking-result').textContent='جارٍ التحقق من الطلب...';
+ trackOrder(code,phone);
+});
+$('phone').addEventListener('input',updatePointsForPhone);
+$('use-points').addEventListener('input',renderCart);
+$('payment').addEventListener('change',updatePaymentDetails);
+$('payment-receipt').addEventListener('change',()=>{
+ const file=$('payment-receipt').files[0],preview=$('receipt-preview');
+ if(!file){clearReceiptPreview();return}
+ if(!file.type.startsWith('image/')){toast('اختر صورة إيصال بصيغة صورة مدعومة.');$('payment-receipt').value='';clearReceiptPreview();return}
+ clearReceiptPreview();receiptPreviewUrl=URL.createObjectURL(file);preview.src=receiptPreviewUrl;preview.hidden=false;
+});
+$('search-address').addEventListener('click',searchDeliveryAddress);
+$('address-results').addEventListener('change',calculateDeliveryRoute);
+$('address').addEventListener('input',()=>{
+ const hadDeliveryData=Boolean(customerLocation||addressCandidates.length);
+ clearDeliveryQuote(hadDeliveryData?'تغيّر العنوان؛ ابحث عنه مجددًا لحساب تكلفة التوصيل.':'اكتب عنوانك ثم ابحث عنه لاختيار المكان المطابق وحساب مسافة الطريق.');
+});
+function applyCoupon(){
+ const code=$('coupon-code').value.trim().toUpperCase();
+ if(code!=='SAVE50'){
+  appliedCoupon='';
+  renderCart();
+  $('coupon-status').textContent='كود الخصم غير صحيح.';
+  $('coupon-status').classList.remove('is-applied');
+  return;
+ }
+ if(getSubtotal()===0){
+  $('coupon-status').textContent='أضف منتجات إلى السلة أولًا.';
+  $('coupon-status').classList.remove('is-applied');
+  return;
+ }
+ appliedCoupon=code;
+ $('coupon-status').textContent='';
+ renderCart();
+}
+$('apply-coupon').addEventListener('click',applyCoupon);
+$('coupon-code').addEventListener('keydown',event=>{if(event.key==='Enter'){event.preventDefault();applyCoupon()}});
+$('remove-coupon').addEventListener('click',()=>{
+ appliedCoupon='';
+ $('coupon-code').value='';
+ $('coupon-status').textContent='';
+ renderCart();
+});
+$('order-form').addEventListener('submit',async e=>{
+ e.preventDefault();if(!Object.keys(cart).length){toast('أضف منتجًا واحدًا على الأقل للسلة');return}
+ if(!customerLocation){toast('ابحث عن عنوان التوصيل واختر النتيجة الصحيحة لحساب تكلفة الطريق');$('search-address').focus();return}
+ const normalizedPhone=normalizePhone($('phone').value);if(!normalizedPhone){toast('اكتب رقم هاتف صحيح');$('phone').focus();return}if(activePointsPhone!==normalizedPhone)updatePointsForPhone();
+ const paymentMethod=$('payment').value,isDigitalPayment=paymentMethod==='wallet'||paymentMethod==='instapay',receiptFile=$('payment-receipt').files[0],submitButton=document.querySelector('.cart-drawer-footer [type="submit"]');
+ if(isDigitalPayment&&!receiptFile){toast('أرفق صورة التحويل قبل تأكيد الطلب');$('payment-receipt').focus();return}
+ if(!supabaseClient){toast('تعذر الاتصال بخدمة الطلبات. حدّث الصفحة أو حاول لاحقًا.');return}
+ submitButton.disabled=true;
+ let receiptBlob=null;
+ if(isDigitalPayment){
+  $('order-status').style.display='block';$('order-status').textContent='جارٍ تجهيز صورة التحويل...';
+  try{receiptBlob=await compressReceipt(receiptFile)}catch(error){submitButton.disabled=false;$('order-status').textContent=error.message;toast(error.message);return}
+ }
+ const sub=getSubtotal(),pts=earned(),available=phonePoints,couponDiscount=getCouponDiscount(sub),use=Math.min(usedPoints,available,Math.floor(sub-couponDiscount)),delivery=getDeliveryDetails();
+ const order={code:generateOrderCode(),date:new Date().toISOString(),customer:$('customer').value.trim(),phone:$('phone').value.trim(),normalizedPhone,address:$('address').value.trim(),deliveryFee:delivery.fee,deliveryDistanceKm:delivery.distanceKm,deliveryLatitude:customerLocation.latitude,deliveryLongitude:customerLocation.longitude,payment:paymentMethod==='wallet'?'محفظة إلكترونية':paymentMethod==='instapay'?'InstaPay':'الدفع عند الاستلام',paymentMethod,paymentRecipient:paymentDetails[paymentMethod]?.recipient||'',notes:$('notes').value.trim(),items:getCartEntries().map(({product,grams,quantity})=>({name:product.name,weightGrams:grams,weight:weightLabel(grams),quantity,pricePerKg:product.price,subtotal:product.price*grams*quantity/1000})),subtotal:sub,couponCode:appliedCoupon,couponDiscount,pointsUsed:use,discount:couponDiscount+use,total:Math.max(0,sub-couponDiscount-use)+delivery.fee,pointsEarned:pts,status:isDigitalPayment?'بانتظار تأكيد الدفع':'طلب جديد'};
+ const receiptPath=isDigitalPayment?`orders/${order.code}-${Date.now()}.jpg`:null;
+ const newBalance=isDigitalPayment?available:Math.max(0,available-use)+pts;
+ const submitOrder={code:order.code,customer:order.customer,phone:order.phone,normalized_phone:order.normalizedPhone,address:order.address,delivery_fee:order.deliveryFee,delivery_distance_km:order.deliveryDistanceKm,delivery_latitude:order.deliveryLatitude,delivery_longitude:order.deliveryLongitude,payment_method:order.paymentMethod,payment_recipient:order.paymentRecipient,receipt_path:receiptPath,notes:order.notes,items:order.items,subtotal:order.subtotal,coupon_code:order.couponCode,coupon_discount:order.couponDiscount,points_used:order.pointsUsed,discount:order.discount,total:order.total,points_earned:order.pointsEarned,status:order.status};
+ $('order-status').style.display='block';$('order-status').textContent=isDigitalPayment?'جارٍ رفع الإيصال وحفظ الطلب...':'جارٍ حفظ الطلب...';
+ let receiptUploaded=false;
+ try{
+  if(isDigitalPayment){
+   const{error:uploadError}=await supabaseClient.storage.from('payment-receipts').upload(receiptPath,receiptBlob,{contentType:'image/jpeg',upsert:false});
+   if(uploadError){
+    const message=uploadError.message==='Bucket not found'
+     ?'مخزن صور التحويل غير مُعدّ في Supabase. شغّل ملف supabase-setup.sql من SQL Editor ثم أعد المحاولة.'
+     :`تعذر رفع صورة التحويل: ${uploadError.message}`;
+    throw new Error(message);
+   }
+   receiptUploaded=true;
+  }
+  const{error:orderError}=await supabaseClient.from('store_orders').insert(submitOrder);
+  if(orderError){
+   const message=orderError.code==='PGRST204'
+    ?'أعمدة التوصيل غير موجودة في قاعدة البيانات. شغّل ملف supabase-delivery-migration.sql في SQL Editor، ثم حدّث الصفحة وأعد المحاولة.'
+    :orderError.code==='PGRST205'
+     ?'جدول الطلبات غير موجود. شغّل ملف supabase-setup.sql كاملًا في SQL Editor، ثم أعد المحاولة.'
+     :orderError.code==='42501'
+     ?'صلاحيات حفظ الطلبات غير مكتملة. شغّل آخر نسخة من supabase-setup.sql في SQL Editor، ثم أعد المحاولة.'
+     :`تعذر حفظ الطلب: ${orderError.message}`;
+   throw new Error(message);
+  }
+ }catch(error){
+  console.error('تعذر إرسال الطلب إلى Supabase:',error);
+  submitButton.disabled=false;
+  $('order-status').textContent=receiptUploaded?`تم رفع الإيصال لكن تعذر تسجيل الطلب: ${error.message}`:(error.message||'تعذر حفظ الطلب. تحقق من الاتصال وإعدادات Supabase ثم حاول مجددًا.');
+  toast(receiptUploaded?'تعذر حفظ الطلب بعد رفع الإيصال؛ السلة ما زالت محفوظة.':'لم يتم حفظ الطلب؛ السلة ما زالت محفوظة.');
+  return;
+ }
+ try{
+  localStorage.setItem('hamzawy_points_'+normalizedPhone,String(newBalance));
+  localStorage.setItem('hamzawy_cart','{}');
+ }catch(error){
+  console.error('تم حفظ الطلب على Supabase لكن تعذر تحديث التخزين المحلي:',error);
+  toast('تم حفظ الطلب، لكن تعذر تحديث السلة أو الرصيد المحلي.');
+ }
+ activePointsPhone=normalizedPhone;phonePoints=newBalance;$('use-points').value=0;usedPoints=0;cart={};appliedCoupon='';$('coupon-code').value='';$('coupon-status').textContent='';renderCart();
+ $('order-status').style.display='block';$('order-status').innerHTML=isDigitalPayment?`تم تسجيل الطلب وإرفاق صورة التحويل.<br>رقم الطلب: <b>${order.code}</b><br>تكلفة التوصيل: <b>${money(order.deliveryFee)}</b><br>الإجمالي: <b>${money(order.total)}</b><br><strong>الطلب بانتظار مراجعة التحويل وتأكيد الدفع.</strong>`:`تم حفظ الطلب بنجاح!<br>رقم الطلب: <b>${order.code}</b><br>تكلفة التوصيل: <b>${money(order.deliveryFee)}</b><br>الإجمالي: <b>${money(order.total)}</b>`;
+ $('tracking-code').value=order.code;$('tracking-phone').value=order.phone;
+ trackOrder(order.code,normalizedPhone,true);
+ e.target.reset();clearDeliveryQuote('اكتب عنوانك ثم ابحث عنه لاختيار المكان المطابق وحساب مسافة الطريق.');submitButton.disabled=false;clearReceiptPreview();updatePaymentDetails();$('phone').value=order.phone;$('use-points').value=0;renderCart();$('cart-dialog').querySelector('.cart-drawer-content').scrollTo({top:0,behavior:'smooth'});toast('تم تسجيل الطلب بنجاح');
+});
+cart=loadCart();renderCats();renderProducts();renderCart();updatePaymentDetails();
+</script>
+</body>
+</html>

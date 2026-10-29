@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#153c2d">
+<title>إدارة الطلبات | الحمزاوي</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="admin.css">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body class="admin-page">
+<header class="admin-header">
+  <a class="admin-brand" href="index.html"><img src="assets/logo.jpg" alt=""><span>الحمزاوي <small>إدارة المتجر</small></span></a>
+  <div class="header-actions"><a class="store-link" href="delivery.html">لوحة المندوب</a><a class="store-link" href="index.html">زيارة المتجر</a><button class="quiet-button" id="sign-out" type="button" hidden>تسجيل الخروج</button></div>
+</header>
+<main class="admin-main">
+  <section class="login-screen" id="login-screen">
+    <form class="login-form" id="login-form">
+      <p class="eyebrow">مساحة خاصة بالمشرفين</p>
+      <h1>تسجيل الدخول</h1>
+      <p class="login-copy">استخدم حساب المشرف المسجل في Supabase.</p>
+      <label for="email">البريد الإلكتروني</label>
+      <input id="email" type="email" autocomplete="username" required>
+      <label for="password">كلمة المرور</label>
+      <input id="password" type="password" autocomplete="current-password" required>
+      <button class="primary-button" type="submit">دخول</button>
+      <p class="notice" id="login-message" role="status"></p>
+    </form>
+  </section>
+
+  <section class="access-screen" id="access-screen" hidden>
+    <div class="access-message"><span class="access-mark">!</span><h1>الحساب غير مصرح له</h1><p>هذا الحساب غير مضاف إلى قائمة مشرفي المتجر.</p><button class="quiet-button" id="access-sign-out" type="button">تسجيل الخروج</button></div>
+  </section>
+
+  <section class="dashboard" id="dashboard" hidden>
+    <div class="page-heading"><div><p class="eyebrow">نظرة عامة</p><h1>الطلبات</h1><p class="muted" id="account-label"></p></div><button class="refresh-button" id="refresh-orders" type="button" aria-label="تحديث الطلبات" title="تحديث الطلبات">↻</button></div>
+    <section class="courier-management" aria-labelledby="courier-heading">
+      <div class="courier-management-heading"><div><p class="eyebrow">إدارة الوصول</p><h2 id="courier-heading">حسابات المندوبين</h2></div><button class="quiet-button" id="refresh-couriers" type="button">تحديث القائمة</button></div>
+      <form class="courier-create-form" id="create-courier-form">
+        <div class="field"><label for="courier-name">اسم المندوب</label><input id="courier-name" required maxlength="80" autocomplete="name"></div>
+        <div class="field"><label for="courier-email">البريد الإلكتروني</label><input id="courier-email" type="email" required maxlength="254" autocomplete="email"></div>
+        <div class="field"><label for="courier-password">كلمة مرور مؤقتة</label><input id="courier-password" type="password" required minlength="12" autocomplete="new-password"><small>12 حرفًا على الأقل. شاركها مع المندوب بأمان.</small></div>
+        <button class="primary-button courier-create-button" type="submit">إنشاء حساب مندوب</button>
+      </form>
+      <p class="notice" id="courier-message" role="status"></p>
+      <div class="courier-list-wrap"><table><thead><tr><th>المندوب</th><th>البريد الإلكتروني</th><th>تاريخ الإنشاء</th></tr></thead><tbody id="couriers-body"><tr><td colspan="3" class="table-message">جارٍ تحميل القائمة...</td></tr></tbody></table></div>
+    </section>
+    <div class="summary-grid" aria-live="polite">
+      <article class="summary-item"><span>كل الطلبات</span><strong id="count-all">—</strong></article>
+      <article class="summary-item"><span>طلبات جديدة</span><strong id="count-new">—</strong></article>
+      <article class="summary-item"><span>بانتظار الدفع</span><strong id="count-pending">—</strong></article>
+      <article class="summary-item"><span>تم تأكيد الدفع</span><strong id="count-confirmed">—</strong></article>
+      <article class="summary-item"><span>طلبات مكتملة</span><strong id="count-complete">—</strong></article>
+      <article class="summary-item"><span>تم توصيلها اليوم</span><strong id="count-delivered-today">—</strong></article>
+    </div>
+    <div class="orders-toolbar">
+      <label class="search-control"><span class="visually-hidden">البحث في الطلبات</span><input id="search-orders" type="search" placeholder="ابحث برقم الطلب أو الاسم أو الهاتف"></label>
+      <label class="filter-control"><span class="visually-hidden">فلترة حسب الحالة</span><select id="filter-status"><option value="all">كل الحالات</option><option>طلب جديد</option><option>بانتظار تأكيد الدفع</option><option>تم تأكيد الدفع</option><option>تعذر تأكيد الدفع</option></select></label>
+      <p class="results-count" id="results-count" aria-live="polite"></p>
+    </div>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>رقم الطلب</th><th>العميل</th><th>التاريخ</th><th>طريقة الدفع</th><th>الإجمالي</th><th>حالة الدفع</th><th>تجهيز الطلب</th><th>التوصيل</th><th><span class="visually-hidden">التفاصيل</span></th></tr></thead>
+        <tbody id="orders-body"><tr><td colspan="9" class="table-message">جارٍ تحميل الطلبات...</td></tr></tbody>
+      </table>
+    </div>
+    <p class="notice page-notice" id="dashboard-message" role="status"></p>
+  </section>
+</main>
+
+<dialog class="order-dialog" id="order-dialog" aria-labelledby="dialog-title">
+  <div class="dialog-header"><div><p class="eyebrow">تفاصيل الطلب</p><h2 id="dialog-title"></h2></div><button class="close-button" id="close-dialog" type="button" aria-label="إغلاق">×</button></div>
+  <div class="dialog-content" id="order-details"></div>
+  <form class="status-form" id="status-form"><label for="order-status">حالة الدفع</label><div class="status-actions"><select id="order-status" required></select><button class="primary-button" type="submit">حفظ الحالة</button></div><p class="notice" id="status-message" role="status"></p></form>
+  <form class="status-form fulfillment-form" id="fulfillment-form"><label for="fulfillment-status">تنفيذ الطلب</label><div class="status-actions"><select id="fulfillment-status" required><option value="قيد التجهيز">قيد التجهيز</option><option value="مكتمل">مكتمل</option></select><button class="primary-button" type="submit">حفظ التنفيذ</button></div><p class="notice" id="fulfillment-message" role="status"></p></form>
+</dialog>
+<script src="admin.js"></script>
+</body>
+</html>
